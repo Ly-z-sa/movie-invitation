@@ -10,9 +10,15 @@ rsvpButton.addEventListener('click', () => {
     messageBox.style.display = 'none'; // Hide any previous messages
 });
 
+const EMAILJS_SERVICE_ID = 'service_i3aliph';
+const EMAILJS_TEMPLATE_ID = 'template_jb0adnv'; // Replace with your template ID
+const EMAILJS_PUBLIC_KEY = '6YJYhziQkiK7P8aHU';   // Replace with your EmailJS public key
+
 // Add an event listener for the form submission
 rsvpForm.addEventListener('submit', function(event) {
     event.preventDefault();
+
+    // 1. Submit to Formspree
     const data = new FormData(rsvpForm);
     fetch('https://formspree.io/f/mwpodloj', {
         method: 'POST',
@@ -20,8 +26,26 @@ rsvpForm.addEventListener('submit', function(event) {
         headers: { 'Accept': 'application/json' }
     }).then(response => {
         if (response.ok) {
-            rsvpForm.classList.add('hidden');
-            document.getElementById('thank-you-message').classList.remove('hidden');
+            // 2. Send confirmation email via EmailJS
+            const name = rsvpForm.elements['name'].value;
+            const email = rsvpForm.elements['email'].value;
+            const guests = rsvpForm.elements['guests'].value;
+        
+            emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, {
+                name: name,
+                email: email,
+                guests: guests,
+                movietitle: movietitle,
+                moviedate: moviedate
+            }, EMAILJS_PUBLIC_KEY)
+            .then(function() {
+                rsvpForm.classList.add('hidden');
+                document.getElementById('thank-you-message').classList.remove('hidden');
+            }, function(error) {
+                rsvpForm.classList.add('hidden');
+                document.getElementById('thank-you-message').classList.remove('hidden');
+                // Optionally show a warning that confirmation email failed
+            });
         } else {
             document.getElementById('message-box').textContent = "There was an error. Please try again.";
         }
@@ -42,3 +66,6 @@ function showMessage(message, type) {
     messageBox.classList.add(type);
     messageBox.style.display = 'block'; // Ensure the message box is visible
 }
+
+const movietitle = document.getElementById('movie-title').textContent;
+const moviedate = document.getElementById('movie-date').textContent;
