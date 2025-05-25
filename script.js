@@ -11,33 +11,23 @@ rsvpButton.addEventListener('click', () => {
 });
 
 // Add an event listener for the form submission
-rsvpForm.addEventListener('submit', (event) => {
-    event.preventDefault(); // Prevent the default form submission behavior (page reload)
-
-    // Retrieve values from the form inputs
-    const name = document.getElementById('name').value;
-    const email = document.getElementById('email').value;
-    const guests = document.getElementById('guests').value;
-
-    // Basic validation to ensure all required fields are filled
-    if (!name || !email || !guests) {
-        showMessage('Please fill in all fields.', 'error'); // Display an error message
-        return; // Stop the function execution
-    }
-
-    // Simulate sending data to a server (in a real application, you would use fetch() or XMLHttpRequest here)
-    console.log('RSVP Submitted:');
-    console.log(`Name: ${name}`);
-    console.log(`Email: ${email}`);
-    console.log(`Guests: ${guests}`);
-
-    // Display a success message to the user
-    showMessage(`Thank you, ${name}! Your RSVP for ${guests} person(s) has been received. We look forward to seeing you!`, 'success');
-
-    // Hide the form and show the RSVP button again after successful submission
-    rsvpForm.classList.add('hidden');
-    rsvpButton.classList.remove('hidden');
-    rsvpForm.reset(); // Clear the form fields
+rsvpForm.addEventListener('submit', function(event) {
+    event.preventDefault();
+    const data = new FormData(rsvpForm);
+    fetch('https://formspree.io/f/mwpodloj', {
+        method: 'POST',
+        body: data,
+        headers: { 'Accept': 'application/json' }
+    }).then(response => {
+        if (response.ok) {
+            rsvpForm.classList.add('hidden');
+            document.getElementById('thank-you-message').classList.remove('hidden');
+        } else {
+            document.getElementById('message-box').textContent = "There was an error. Please try again.";
+        }
+    }).catch(() => {
+        document.getElementById('message-box').textContent = "There was an error. Please try again.";
+    });
 });
 
 /**
@@ -52,10 +42,3 @@ function showMessage(message, type) {
     messageBox.classList.add(type);
     messageBox.style.display = 'block'; // Ensure the message box is visible
 }
-
-// Example of how you could dynamically update movie details here if needed
-// For example:
-// document.getElementById('movie-title').textContent = "The New Sci-Fi Epic";
-// document.getElementById('movie-date').textContent = "Friday, July 5th";
-// document.getElementById('movie-time').textContent = "8:30 PM EST";
-// document.getElementById('movie-location').textContent = "Virtual Screening Link";
