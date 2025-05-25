@@ -30,13 +30,19 @@ rsvpForm.addEventListener('submit', function(event) {
             const name = rsvpForm.elements['name'].value;
             const email = rsvpForm.elements['email'].value;
             const guests = rsvpForm.elements['guests'].value;
-        
+            const movietitle = document.getElementById('movie-title').textContent;
+            const moviedate = document.getElementById('movie-date').textContent;
+
+            // Generate a random ticket number (e.g., 8 digits)
+            const ticketnumber = Math.floor(10000000 + Math.random() * 90000000);
+
             emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, {
                 name: name,
                 email: email,
                 guests: guests,
                 movietitle: movietitle,
-                moviedate: moviedate
+                moviedate: moviedate,
+                ticketnumber: ticketnumber // Add ticket number
             }, EMAILJS_PUBLIC_KEY)
             .then(function() {
                 rsvpForm.classList.add('hidden');
@@ -66,6 +72,3 @@ function showMessage(message, type) {
     messageBox.classList.add(type);
     messageBox.style.display = 'block'; // Ensure the message box is visible
 }
-
-const movietitle = document.getElementById('movie-title').textContent;
-const moviedate = document.getElementById('movie-date').textContent;
