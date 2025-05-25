@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>You're Invited! Movie Night</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <script type="module" src="https://unpkg.com/@google/model-viewer/dist/model-viewer.min.js"></script>
+</head>
+<body>
+    <div class="container">
+        <div class="poster-column">
+            <img src="F1-the-movie.jpg"
+                 alt="F1 The Movie Poster"
+                 class="movie-poster"
+                 onerror="this.onerror=null;this.src='https://placehold.co/300x450/6B7280/FFFFFF?text=Movie+Poster+Not+Found';">
+        </div>
+
+        <div class="info-form-column">
+            <div class="invitation-info">
+                <h1 class="text-gray-900">You're Invited!</h1>
+                <h2 class="text-indigo-700">Movie Night Extravaganza!</h2>
+                <p class="text-gray-700">Join us for a fantastic movie day featuring:</p>
+                <p id="movie-title">"F1 The Movie"</p>
+                <p class="text-md text-gray-600 mb-6">
+                    <span class="font-medium">Date:</span> <span id="movie-date">Wednesday, June 26th</span><br>
+                    <span class="font-medium">Time:</span> <span id="movie-time">When you're free</span><br>
+                    <span class="font-medium">Location:</span> <span id="movie-location">Any cinema in the city</span>
+                </p>
+                <button id="rsvp-button" class="btn">Kindly let me know if you're coming!</button>
+                <div id="message-box" class="message-box"></div>
+            </div>
+
+            <form id="rsvp-form" class="hidden">
+                <h3 class="text-gray-800">Confirm Your Attendance</h3>
+                <div class="form-group">
+                    <label for="name">Your Name:</label>
+                    <input type="text" id="name" name="name" placeholder="Max verstappen" required>
+                </div>
+                <div class="form-group">
+                    <label for="email">Your Email:</label>
+                    <input type="email" id="email" name="email" placeholder="yuki.tsunoda@f1.com" required>
+                </div>
+                <div class="form-group">
+                    <label for="guests">Number of Guests (including yourself):</label>
+                    <input type="number" id="guests" name="guests" value="1" min="1" required>
+                </div>
+                <button type="submit" class="btn w-full">Submit your reservation</button>
+            </form>
+        </div>
+
+        <div class="car-3d">
+            <model-viewer src="f1-car.usdz"
+                          alt="A 3D F1 car"
+                          auto-rotate
+                          camera-controls
+                          ar>
+            </model-viewer>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
